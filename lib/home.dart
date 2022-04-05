@@ -3,27 +3,32 @@ import 'package:ftracking/route.dart' as route;
 import 'package:ftracking/team.dart';
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
         onGenerateRoute: route.controller,
         title: 'Team Tracking GPS',
         theme: ThemeData(
           primarySwatch: Colors.indigo,
         ),
-        home: new Home());
+        home: Home());
   }
 }
+
 class UserData {
   String userName = "";
   int age = 18;
 }
+
 class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     // Khai báo biến
     var userName = "";
 
@@ -31,71 +36,62 @@ class Home extends StatelessWidget {
 
     // chuyển sang màn hình tiếp theo
     _nextScreen() {
-      print(userName);
-      var arg = new UserData();
+      // print(userName);
+      var arg = UserData();
       arg.userName = userName;
       arg.age = 20;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => new Team(arg)));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Team(arg)));
     }
+
     // Giao diện màn hình
     return Scaffold(
         backgroundColor: Colors.lightBlueAccent,
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: 600,
-                height: 400,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/home_signin.png')
-                      )
-                  ),
+        body: Column(children: <Widget>[
+          Container(
+            width: 600,
+            height: 400,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/home_signin.png'))),
+          ),
+          Container(
+            margin: const EdgeInsets.only(right: 10, left: 10),
+            child: TextField(
+              onChanged: (text) {
+                userName = text;
+              },
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  prefixIcon: Icon(Icons.person, color: Colors.red),
+                  hintText: 'User Name',
+                  filled: true,
+                  fillColor: Colors.white),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+                shadowColor: Colors.greenAccent,
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28.0)),
+                minimumSize: const Size(100, 50),
               ),
-              Container(
-                margin: const EdgeInsets.only(right: 10, left: 10),
-                child: TextField(
-                  onChanged: (text) {
-                    userName = text;
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2),
-                          borderRadius: const BorderRadius.all(
-                              const Radius.circular(30)
-                          )
-                      ),
-                      prefixIcon: Icon(Icons.person,
-                        color: Colors.red
-                      ),
-                      hintText: 'User Name',
-                      filled: true,
-                      fillColor: Colors.white
-                  ),
-                ),
+              onPressed: () {
+                _nextScreen();
+              },
+              child: const Icon(
+                Icons.arrow_right_alt,
+                size: 42,
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    onPrimary: Colors.white,
-                    shadowColor: Colors.greenAccent,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28.0)),
-                    minimumSize: Size(100, 50),
-                  ),
-                  onPressed: () {
-                    _nextScreen();
-                  },
-                  child: Icon(Icons.arrow_right_alt,
-                  size: 42,),
-                ),
-              ),
-
-          ])
-        )
-      );
+            ),
+          ),
+        ]));
   }
 }
